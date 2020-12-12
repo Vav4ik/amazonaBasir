@@ -1,25 +1,29 @@
 import express from "express";
-import data from "./data.js";
+import mongoose from "mongoose";
+import productRouter from "./routers/productRouter.js";
+import userRouter from "./routers/userRouter.js";
 
 const app = express();
-const port = process.env.PORT || 5000;
+
+mongoose.connect(process.env.MONGODB_URL || "mongodb://localhost/amazona", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+});
 
 app.get("/", (req, res) => {
-    res.send("Server is ready.");
+  res.send("Server is ready.");
 });
 
-app.get("/api/products", (req, res) => {
-    res.send(data.products);
+app.use("/api/users", userRouter);
+app.use("/api/products", productRouter);
+
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: err.message });
+  next();
 });
 
-app.get("/api/product/:id", (req, res) => {
-    const product = data.products.find(product => product._id === req.params.id);
-    if (!product) {
-        res.status(404).send({ message: "Product Not Found." });
-    }
-    res.send(product);
-});
-
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
-    console.log("Server is running on port " + port);
+  console.log("Server is running on port " + port);
 });

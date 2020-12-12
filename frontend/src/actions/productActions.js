@@ -32,7 +32,7 @@ export const detailsProduct = (productId) => async (dispatch) => {
         payload: productId
     });
     try {
-        const { data } = await Axios.get(`/api/product/${productId}`);
+        const { data } = await Axios.get(`/api/products/${productId}`);
         dispatch({
             type: PRODUCT_DETAILS_SUCCESS,
             payload: data
