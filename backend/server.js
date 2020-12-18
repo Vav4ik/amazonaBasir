@@ -1,10 +1,17 @@
 import express from "express";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 import productRouter from "./routers/productRouter.js";
 import userRouter from "./routers/userRouter.js";
 
+dotenv.config();
+
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// eslint-disable-next-line no-undef
 mongoose.connect(process.env.MONGODB_URL || "mongodb://localhost/amazona", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -23,6 +30,7 @@ app.use((err, req, res, next) => {
   next();
 });
 
+// eslint-disable-next-line no-undef
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log("Server is running on port " + port);
