@@ -30,6 +30,13 @@ orderRouter.post(
   })
 );
 
+orderRouter.get("/mine", isAuth, asyncHandler(async(req, res) => {
+  const orders = await Order.find({user: req.user._id});
+  if (orders) {
+    res.send(orders);
+  }
+}));
+
 orderRouter.get(
   "/:id",
   isAuth,
