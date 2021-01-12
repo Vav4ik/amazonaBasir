@@ -25,3 +25,5 @@ yarn-error.log*
 package-lock.json
 .env
 frontend/.env
+
+/uploads/products

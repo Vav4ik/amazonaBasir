@@ -8,7 +8,7 @@
       "commonjs": true,
       "browser": true,
       "es6": true
-     }
+    }
   },
   "description": "Learning MERN with Basir",
   "main": "index.js",
@@ -31,7 +31,8 @@
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.5"
+    "mongoose": "^5.11.5",
+    "multer": "^1.4.2"
   },
   "devDependencies": {
     "eslint": "^7.14.0",
