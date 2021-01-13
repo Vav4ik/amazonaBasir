@@ -21,9 +21,9 @@ mongoose.connect(process.env.MONGODB_URL || "mongodb://localhost/amazona", {
   useCreateIndex: true,
 });
 
-// app.get("/", (req, res) => {
-//   res.send("Server is ready.");
-// });
+app.get("/", (req, res) => {
+  res.send("Server is ready.");
+});
 
 app.get("/api/config/paypal", (req, res) => {
   // eslint-disable-next-line no-undef
@@ -38,9 +38,9 @@ app.use(
 
 //to serve React files in frontend (on Heroku)
 app.use(express.static(path.join(__dirname, "/frontend/build")));
-app.get("*", (req, res) =>
-  res.sendFile(path.join(__dirname, "/frontend/build/index.html"))
-);
+// app.get("*", (req, res) =>
+//   res.sendFile(path.join(__dirname, "/frontend/build/index.html"))
+// );
 
 app.use("/api/uploads", uploadRouter);
 app.use("/api/orders", orderRouter);
