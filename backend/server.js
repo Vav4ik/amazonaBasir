@@ -26,16 +26,16 @@ app.get("/api/config/paypal", (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID || "sb");
 });
 
+app.use("/api/uploads", uploadRouter);
+app.use("/api/orders", orderRouter);
+app.use("/api/products", productRouter);
+app.use("/api/users", userRouter);
+
 const __dirname = path.resolve();
 app.use(
   "/productimages",
   express.static(path.join(__dirname, "/uploads/products"))
 );
-
-app.use("/api/uploads", uploadRouter);
-app.use("/api/orders", orderRouter);
-app.use("/api/products", productRouter);
-app.use("/api/users", userRouter);
 
 //to serve React files in frontend (on Heroku)
 app.use(express.static(path.join(__dirname, "/frontend/build")));
