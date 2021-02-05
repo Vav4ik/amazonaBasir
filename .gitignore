@@ -26,4 +26,5 @@ package-lock.json
 .env
 frontend/.env
 
-
+/uploads/products/*.jpg
+/uploads/products/*.png

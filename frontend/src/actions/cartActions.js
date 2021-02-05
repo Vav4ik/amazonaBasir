@@ -1,6 +1,7 @@
 import Axios from "axios";
 import {
   CART_ADD_ITEM,
+  CART_ADD_ITEM_FAIL,
   CART_REMOVE_ITEM,
   CART_REMOVE_SHIPPING_ADDRESS,
   CART_SAVE_PAYMENT_METHOD,
@@ -10,18 +11,32 @@ import {
 
 export const addToCart = (productId, qty) => async (dispatch, getState) => {
   const { data } = await Axios.get(`/api/products/${productId}`);
-  dispatch({
-    type: CART_ADD_ITEM,
-    payload: {
-      name: data.name,
-      image: data.image,
-      price: data.price,
-      countInStock: data.countInStock,
-      product: data._id,
-      qty,
-    },
-  });
-  localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+  const {
+    cart: { cartItems },
+  } = getState();
+  if (cartItems.length > 0 && data.seller._id !== cartItems[0].seller._id) {
+    dispatch({
+      type: CART_ADD_ITEM_FAIL,
+      payload: `Can't add to cart. Please buy from one seller at a time. (${cartItems[0].seller.seller.name})`,
+    });
+  } else {
+    dispatch({
+      type: CART_ADD_ITEM,
+      payload: {
+        name: data.name,
+        image: data.image,
+        price: data.price,
+        countInStock: data.countInStock,
+        product: data._id,
+        seller: data.seller,
+        qty,
+      },
+    });
+    localStorage.setItem(
+      "cartItems",
+      JSON.stringify(getState().cart.cartItems)
+    );
+  }
 };
 
 export const removeFromCart = (productId) => (dispatch, getState) => {
@@ -57,6 +72,6 @@ export const removeShippingAddress = () => (dispatch) => {
 export const savePaymentMethod = (paymentMethod) => (dispatch) => {
   dispatch({
     type: CART_SAVE_PAYMENT_METHOD,
-    payload: paymentMethod
+    payload: paymentMethod,
   });
 };

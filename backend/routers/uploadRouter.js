@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { isAdmin, isAuth } from "../utils.js";
+import { isAuth, isSellerOrAdmin } from "../utils.js";
 
 const uploadRouter = express.Router();
 
@@ -36,7 +36,7 @@ const upload = multer({
 uploadRouter.post(
   "/",
   isAuth,
-  isAdmin,
+  isSellerOrAdmin,
   upload.single("productImage"),
   (req, res) => {
     //console.log(req.file);

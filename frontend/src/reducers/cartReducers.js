@@ -1,5 +1,6 @@
 import {
   CART_ADD_ITEM,
+  CART_ADD_ITEM_FAIL,
   CART_REMOVE_ITEM,
   CART_REMOVE_SHIPPING_ADDRESS,
   CART_SAVE_PAYMENT_METHOD,
@@ -17,6 +18,7 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
       if (existItem) {
         return {
           ...state,
+          error: "",
           cartItems: state.cartItems.map((cartItem) =>
             cartItem.product === existItem.product ? item : cartItem
           ),
@@ -24,35 +26,40 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
       } else {
         return {
           ...state,
+          error: "",
           cartItems: [...state.cartItems, item],
         };
       }
+    case CART_ADD_ITEM_FAIL:
+      return { ...state, error: action.payload };
     case CART_REMOVE_ITEM:
       return {
         ...state,
+        error: "",
         cartItems: state.cartItems.filter(
           (item) => item.product !== action.payload
         ),
       };
     case EMPTY_CART:
       return {
-        ...state,  
+        ...state,
+        error: "",
         cartItems: [],
       };
     case CART_SAVE_SHIPPING_ADDRESS:
       return {
         ...state,
-        shippingAddress: action.payload
+        shippingAddress: action.payload,
       };
     case CART_REMOVE_SHIPPING_ADDRESS:
       return {
         ...state,
-        shippingAddress: {}
+        shippingAddress: {},
       };
     case CART_SAVE_PAYMENT_METHOD:
       return {
         ...state,
-        paymentMethod: action.payload
+        paymentMethod: action.payload,
       };
     default:
       return state;
